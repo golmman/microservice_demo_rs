@@ -31,7 +31,7 @@ paths:
                 $ref: '#/components/schemas/Error'
   /customer:
     post:
-			description: Upsert a customer
+      description: Upsert a customer
       requestBody:
         required: true
         content:
