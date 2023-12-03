@@ -1,5 +1,10 @@
+use std::convert::Infallible;
+
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
+use warp::http::StatusCode;
+use warp::reject::Rejection;
+use warp::reply::Reply;
 use warp::Filter;
 
 #[derive(Deserialize, Serialize)]
@@ -23,13 +28,12 @@ struct Customer {
 #[derive(Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Error {
-    code: String,
+    code: u16,
     message: String,
 }
 
 #[tokio::main]
 async fn main() {
-    // GET /hello/warp => 200 OK with body "Hello, warp!"
     let read_customer_route = warp::path!("hello" / String).map(read_customer);
 
     let upsert_customer_route = warp::post()
@@ -37,11 +41,28 @@ async fn main() {
         .and(warp::body::json())
         .map(|employee: Customer| warp::reply::json(&employee));
 
-    warp::serve(read_customer_route.or(upsert_customer_route))
-        .run(([127, 0, 0, 1], 3030))
-        .await;
+    println!("Starting server on localhost:3030 ...");
+
+    warp::serve(
+        read_customer_route
+            .or(upsert_customer_route)
+            .recover(handle_rejection),
+    )
+    .run(([127, 0, 0, 1], 3030))
+    .await;
 }
 
 fn read_customer(name: String) -> String {
     format!("Hello, {}!", name)
+}
+
+async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
+    let code = StatusCode::METHOD_NOT_ALLOWED;
+
+    let json = warp::reply::json(&Error {
+        code: code.as_u16(),
+        message: String::from("Method not allowed."),
+    });
+
+    Ok(warp::reply::with_status(json, code))
 }
