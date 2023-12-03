@@ -1,5 +1,10 @@
 # microservice_demo_rs
 
+## ideas
 * demonstrate clean build
-* hurl
 * toCamelCase
+
+## hurl
+```
+hurl --test --glob hurl/**/*.hurl
+```
