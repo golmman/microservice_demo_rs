@@ -8,7 +8,7 @@ use warp::reject::Rejection;
 use warp::reply::Reply;
 use warp::Filter;
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Address {
     street_name: String,
@@ -16,7 +16,7 @@ struct Address {
     zip_code: String,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct Customer {
     email: String,
@@ -26,7 +26,7 @@ struct Customer {
     addresses: Vec<Address>,
 }
 
-#[derive(Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 struct ErrorResponse {
     code: String,
@@ -35,14 +35,16 @@ struct ErrorResponse {
 
 #[tokio::main]
 async fn main() {
-    let read_customer_route = warp::path!("hello" / String).map(read_customer);
+    println!("Starting server on localhost:3030 ...");
+
+    let read_customer_route = warp::get()
+        .and(warp::path!("customer" / String))
+        .and_then(read_customer);
 
     let upsert_customer_route = warp::post()
-        .and(warp::path("customer"))
+        .and(warp::path!("customer" / String))
         .and(warp::body::json())
-        .map(|employee: Customer| warp::reply::json(&employee));
-
-    println!("Starting server on localhost:3030 ...");
+        .and_then(upsert_customer);
 
     warp::serve(
         read_customer_route
@@ -53,17 +55,35 @@ async fn main() {
     .await;
 }
 
-async fn read_customer(name: String) -> Result<impl Reply, Infallible> {
+async fn read_customer(email: String) -> Result<impl Reply, Infallible> {
+    let json = warp::reply::json(&Customer {
+        email,
+        first_name: String::from("Helge"),
+        last_name: String::from("Schneider"),
+        date_of_birth: String::from(""),
+        addresses: Vec::new(),
+    });
 
-    let code = StatusCode::METHOD_NOT_ALLOWED;
+    let code = StatusCode::OK;
+
+    Ok(warp::reply::with_status(json, code))
+}
+
+async fn upsert_customer(
+    email: String,
+    customer: Customer,
+) -> Result<impl Reply, Infallible> {
+    println!("{:?}", customer);
 
     let json = warp::reply::json(&Customer {
-        email: String::from("test@aaa.de"),
-        first_name: todo!(),
-        last_name: todo!(),
-        date_of_birth: todo!(),
-        addresses: todo!(),
+        email,
+        first_name: String::from("Helge"),
+        last_name: String::from("Schneider"),
+        date_of_birth: String::from(""),
+        addresses: Vec::new(),
     });
+
+    let code = StatusCode::CREATED;
 
     Ok(warp::reply::with_status(json, code))
 }
@@ -75,10 +95,15 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     if err.is_not_found() {
         code = StatusCode::NOT_FOUND;
         message = "NOT_FOUND";
-    } else if let Some(e) = err.find::<warp::filters::body::BodyDeserializeError>() {
+    } else if let Some(e) =
+        err.find::<warp::filters::body::BodyDeserializeError>()
+    {
         message = match e.source() {
             Some(cause) => {
-                if cause.to_string().contains("denom") {
+                if cause
+                    .to_string()
+                    .contains("denom")
+                {
                     "FIELD_ERROR: denom"
                 } else {
                     "BAD_REQUEST"
