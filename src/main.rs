@@ -8,29 +8,33 @@ use warp::reject::Rejection;
 use warp::reply::Reply;
 use warp::Filter;
 
+use crate::read_customer::read_customer;
+
+mod read_customer;
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct Address {
-    street_name: String,
-    city: String,
-    zip_code: String,
+pub struct Address {
+    pub street_name: String,
+    pub city: String,
+    pub zip_code: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct Customer {
-    email: String,
-    first_name: String,
-    last_name: String,
-    date_of_birth: String,
-    addresses: Vec<Address>,
+pub struct Customer {
+    pub email: String,
+    pub first_name: String,
+    pub last_name: String,
+    pub date_of_birth: String,
+    pub addresses: Vec<Address>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-struct ErrorResponse {
-    code: String,
-    message: String,
+pub struct ErrorResponse {
+    pub code: String,
+    pub message: String,
 }
 
 #[tokio::main]
@@ -53,20 +57,6 @@ async fn main() {
     )
     .run(([127, 0, 0, 1], 3030))
     .await;
-}
-
-async fn read_customer(email: String) -> Result<impl Reply, Infallible> {
-    let json = warp::reply::json(&Customer {
-        email,
-        first_name: String::from("Helge"),
-        last_name: String::from("Schneider"),
-        date_of_birth: String::from(""),
-        addresses: Vec::new(),
-    });
-
-    let code = StatusCode::OK;
-
-    Ok(warp::reply::with_status(json, code))
 }
 
 async fn upsert_customer(
