@@ -1,9 +1,19 @@
 use std::env;
 
-use crate::model::CtAccessToken;
+use reqwest::IntoUrl;
+use reqwest::RequestBuilder;
+
+use crate::model::CtAccessTokenResponse;
 
 pub struct CtClient {
     access_token: String,
+    api_url: String,
+    auth_url: String,
+    client: reqwest::Client,
+    client_id: String,
+    client_secret: String,
+    project_key: String,
+    scope: String,
 }
 
 impl CtClient {
@@ -17,23 +27,48 @@ impl CtClient {
         let api_url = env::var("CT_API_URL").unwrap();
         let auth_url = env::var("CT_AUTH_URL").unwrap();
 
-        let resp = client
+        let ct_access_token_response = client
             .post(format!("{auth_url}/oauth/token"))
             .header("content-length", 0)
             .query(&[("grant_type", "client_credentials")])
-            .query(&[("scope", scope)])
-            .basic_auth(client_id, Some(client_secret))
+            .query(&[("scope", &scope)])
+            .basic_auth(&client_id, Some(&client_secret))
             .send()
             .await
             .unwrap()
-            .json::<CtAccessToken>()
+            .json::<CtAccessTokenResponse>()
             .await
             .unwrap();
 
-        println!("{:#?}", resp);
+        let access_token = ct_access_token_response.access_token;
+
+        println!("{:#?}", access_token);
 
         Self {
-            access_token: String::from(""),
+            access_token,
+            api_url,
+            auth_url,
+            client,
+            client_id,
+            client_secret,
+            project_key,
+            scope,
         }
+    }
+
+    pub fn delete(&self, ct_path: &str) -> RequestBuilder {
+        self.client
+            .delete(format!("{}/{}{}", self.api_url, self.project_key, ct_path))
+    }
+
+    pub fn get(&self, ct_path: &str) -> RequestBuilder {
+        self.client
+            .get(format!("{}/{}{}", self.api_url, self.project_key, ct_path))
+            .bearer_auth(&self.access_token)
+    }
+
+    pub fn post(&self, ct_path: &str) -> RequestBuilder {
+        self.client
+            .post(format!("{}/{}{}", self.api_url, self.project_key, ct_path))
     }
 }

@@ -23,7 +23,6 @@ pub async fn read_customer(email: String) -> Result<impl Reply, Infallible> {
         Err(_err) => Err(warp::reject()),
     };
 
-
     let json = warp::reply::json(&Customer {
         email,
         first_name: String::from("Helge"),

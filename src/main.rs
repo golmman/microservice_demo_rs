@@ -10,6 +10,7 @@ use warp::reply::Reply;
 use warp::Filter;
 
 use crate::ct_client::CtClient;
+use crate::model::CtCustomerResponse;
 use crate::model::Customer;
 use crate::read_customer::read_customer;
 
@@ -21,6 +22,18 @@ mod read_customer;
 async fn main() {
     println!("Initializing commercetools client...");
     let ct_client = CtClient::new().await;
+
+    let ct_customer_response = ct_client
+        .get("/customers")
+        .send()
+        .await
+        .unwrap()
+        .json::<CtCustomerResponse>()
+        //.text()
+        .await
+        .unwrap();
+
+    println!("{:?}", ct_customer_response);
 
     println!("Starting server on localhost:3030 ...");
 

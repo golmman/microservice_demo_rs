@@ -2,11 +2,11 @@ use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
 #[derive(Debug, Deserialize, Serialize)]
-pub struct CtAccessToken {
-    access_token: String,
-    expires_in: u32,
-    scope: String,
-    token_type: String,
+pub struct CtAccessTokenResponse {
+    pub access_token: String,
+    pub expires_in: u32,
+    pub scope: String,
+    pub token_type: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -32,4 +32,11 @@ pub struct Customer {
 pub struct ErrorResponse {
     pub code: String,
     pub message: String,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CtCustomerResponse {
+    pub limit: u32,
+    pub total: u32,
 }
