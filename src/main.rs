@@ -8,8 +8,10 @@ use warp::reject::Rejection;
 use warp::reply::Reply;
 use warp::Filter;
 
+use crate::ct_client::CtClient;
 use crate::read_customer::read_customer;
 
+mod ct_client;
 mod read_customer;
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -39,6 +41,9 @@ pub struct ErrorResponse {
 
 #[tokio::main]
 async fn main() {
+    println!("Initializing commercetools client...");
+    let ct_client = CtClient::new().await;
+
     println!("Starting server on localhost:3030 ...");
 
     let read_customer_route = warp::get()

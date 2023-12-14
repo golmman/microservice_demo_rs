@@ -8,3 +8,8 @@
 ```
 hurl --test --glob hurl/**/*.hurl
 ```
+
+## run
+```sh
+export $(xargs < .env)
+```
