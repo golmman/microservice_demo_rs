@@ -1,16 +1,6 @@
-use serde_derive::Deserialize;
-use serde_derive::Serialize;
-
-use std::collections::HashMap;
 use std::env;
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct AccessToken {
-    access_token: String,
-    expires_in: u32,
-    scope: String,
-    token_type: String,
-}
+use crate::model::CtAccessToken;
 
 pub struct CtClient {
     access_token: String,
@@ -36,7 +26,7 @@ impl CtClient {
             .send()
             .await
             .unwrap()
-            .json::<AccessToken>()
+            .json::<CtAccessToken>()
             .await
             .unwrap();
 
