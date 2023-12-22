@@ -2,8 +2,6 @@ use std::convert::Infallible;
 use std::error::Error;
 
 use model::ErrorResponse;
-use serde_derive::Deserialize;
-use serde_derive::Serialize;
 use warp::http::StatusCode;
 use warp::reject::Rejection;
 use warp::reply::Reply;
@@ -13,10 +11,13 @@ use crate::ct_client::CtClient;
 use crate::model::CtCustomerResponse;
 use crate::model::Customer;
 use crate::read_customer::read_customer;
+use crate::upsert_customer::upsert_customer;
 
 mod ct_client;
+mod delete_customer;
 mod model;
 mod read_customer;
+mod upsert_customer;
 
 #[tokio::main]
 async fn main() {
@@ -53,25 +54,6 @@ async fn main() {
     )
     .run(([127, 0, 0, 1], 3030))
     .await;
-}
-
-async fn upsert_customer(
-    email: String,
-    customer: Customer,
-) -> Result<impl Reply, Infallible> {
-    println!("{:?}", customer);
-
-    let json = warp::reply::json(&Customer {
-        email,
-        first_name: String::from("Helge"),
-        last_name: String::from("Schneider"),
-        date_of_birth: String::from(""),
-        addresses: Vec::new(),
-    });
-
-    let code = StatusCode::CREATED;
-
-    Ok(warp::reply::with_status(json, code))
 }
 
 async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
