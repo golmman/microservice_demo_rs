@@ -3,6 +3,8 @@
 ## ideas
 * demonstrate clean build
 * toCamelCase
+* rust doesn't know a 'null' value, uses Option
+* serde doesn't distinguish null and undefined
 
 ## hurl
 ```
