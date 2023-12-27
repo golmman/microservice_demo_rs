@@ -4,19 +4,19 @@ use serde_derive::Serialize;
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Address {
-    pub street_name: Option<String>,
     pub city: Option<String>,
+    pub street_name: Option<String>,
     pub zip_code: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Customer {
+    pub addresses: Option<Vec<Address>>,
+    pub date_of_birth: Option<String>,
     pub email: String,
     pub first_name: Option<String>,
     pub last_name: Option<String>,
-    pub date_of_birth: Option<String>,
-    pub addresses: Option<Vec<Address>>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -37,8 +37,8 @@ pub struct CtAccessTokenResponse {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtAddress {
-    pub street_name: Option<String>,
     pub city: Option<String>,
+    pub street_name: Option<String>,
     pub zip_code: Option<String>,
 }
 
@@ -53,11 +53,18 @@ pub struct CtCustomerResponse {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomer {
+    pub addresses: Option<Vec<CtAddress>>,
+    pub date_of_birth: Option<String>,
     pub email: String,
     pub first_name: Option<String>,
     pub last_name: Option<String>,
-    pub date_of_birth: Option<String>,
-    pub addresses: Option<Vec<CtAddress>>,
+    pub password: Option<String>,
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct CtCustomerCreated {
+    pub customer: CtCustomer,
 }
 
 impl From<CtAddress> for Address {
@@ -79,11 +86,12 @@ impl From<CtAddress> for Address {
 impl From<CtCustomer> for Customer {
     fn from(ct_customer: CtCustomer) -> Self {
         let CtCustomer {
+            addresses,
+            date_of_birth,
             email,
             first_name,
             last_name,
-            date_of_birth,
-            addresses,
+            password,
         } = ct_customer;
 
         let addresses = addresses.map(|a| {
@@ -99,6 +107,12 @@ impl From<CtCustomer> for Customer {
             date_of_birth,
             addresses,
         }
+    }
+}
+
+impl From<CtCustomerCreated> for Customer {
+    fn from(ct_customer_created: CtCustomerCreated) -> Self {
+        Customer::from(ct_customer_created.customer)
     }
 }
 
@@ -135,11 +149,12 @@ impl From<Customer> for CtCustomer {
         });
 
         Self {
+            addresses,
+            date_of_birth,
             email,
             first_name,
             last_name,
-            date_of_birth,
-            addresses,
+            password: Some(String::from("admin_admin")),
         }
     }
 }

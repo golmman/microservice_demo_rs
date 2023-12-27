@@ -5,7 +5,9 @@ use warp::reply::Reply;
 
 use crate::ct_client::CtClient;
 use crate::model::CtCustomer;
+use crate::model::CtCustomerCreated;
 use crate::model::Customer;
+use crate::model::ErrorResponse;
 
 pub async fn upsert_customer(
     ct_client: CtClient,
@@ -14,25 +16,36 @@ pub async fn upsert_customer(
 ) -> Result<impl Reply, Infallible> {
     println!("{:?}", customer);
 
-    let ct_customer_response = ct_client
+    let ct_customer_request = CtCustomer::from(customer);
+
+    let ct_customer_response_raw = ct_client
         .post("/customers")
-        .json(&customer)
+        .json(&ct_customer_request)
         .send()
         .await
         .unwrap()
-        .json::<CtCustomer>()
+        .text()
         .await
         .unwrap();
 
-    let json = warp::reply::json(&Customer {
-        email,
-        first_name: None,
-        last_name: None,
-        date_of_birth: None,
-        addresses: Some(Vec::new()),
-    });
+    let (response, status) = if let Ok(ct_customer_created) =
+        serde_json::from_str::<CtCustomerCreated>(&ct_customer_response_raw)
+    {
+        (
+            serde_json::to_string(&Customer::from(ct_customer_created))
+                .unwrap(),
+            StatusCode::CREATED,
+        )
+    } else {
+        (
+            serde_json::to_string(&ErrorResponse {
+                code: String::from("CT_ERROR"),
+                message: String::from(ct_customer_response_raw),
+            })
+            .unwrap(),
+            StatusCode::BAD_GATEWAY,
+        )
+    };
 
-    let code = StatusCode::CREATED;
-
-    Ok(warp::reply::with_status(json, code))
+    Ok(warp::reply::with_status(response, status))
 }
