@@ -4,9 +4,9 @@ use serde_derive::Serialize;
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Address {
-    pub street_name: String,
-    pub city: String,
-    pub zip_code: String,
+    pub street_name: Option<String>,
+    pub city: Option<String>,
+    pub zip_code: Option<String>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -16,7 +16,7 @@ pub struct Customer {
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub date_of_birth: Option<String>,
-    pub addresses: Option<Vec<CtAddress>>,
+    pub addresses: Option<Vec<Address>>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -53,25 +53,89 @@ pub struct CtCustomerResponse {
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomer {
-    pub email: String, 
+    pub email: String,
     pub first_name: Option<String>,
     pub last_name: Option<String>,
     pub date_of_birth: Option<String>,
     pub addresses: Option<Vec<CtAddress>>,
 }
 
+impl From<CtAddress> for Address {
+    fn from(ct_address: CtAddress) -> Self {
+        let CtAddress {
+            city,
+            street_name,
+            zip_code,
+        } = ct_address;
+
+        Self {
+            city,
+            street_name,
+            zip_code,
+        }
+    }
+}
+
+impl From<CtCustomer> for Customer {
+    fn from(ct_customer: CtCustomer) -> Self {
+        let CtCustomer {
+            email,
+            first_name,
+            last_name,
+            date_of_birth,
+            addresses,
+        } = ct_customer;
+
+        let addresses = addresses.map(|a| {
+            a.into_iter()
+                .map(|b| Address::from(b))
+                .collect()
+        });
+
+        Self {
+            email,
+            first_name,
+            last_name,
+            date_of_birth,
+            addresses,
+        }
+    }
+}
+
+impl From<Address> for CtAddress {
+    fn from(address: Address) -> Self {
+        let Address {
+            city,
+            street_name,
+            zip_code,
+        } = address;
+
+        Self {
+            city,
+            street_name,
+            zip_code,
+        }
+    }
+}
+
 impl From<Customer> for CtCustomer {
     fn from(customer: Customer) -> Self {
-        let Customer { 
-            email, 
+        let Customer {
+            email,
             first_name,
             last_name,
             date_of_birth,
             addresses,
         } = customer;
 
+        let addresses = addresses.map(|a| {
+            a.into_iter()
+                .map(|b| CtAddress::from(b))
+                .collect()
+        });
+
         Self {
-            email, 
+            email,
             first_name,
             last_name,
             date_of_birth,

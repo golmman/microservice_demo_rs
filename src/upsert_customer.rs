@@ -21,7 +21,6 @@ pub async fn upsert_customer(
         .await
         .unwrap()
         .json::<CtCustomer>()
-        //.text()
         .await
         .unwrap();
 
