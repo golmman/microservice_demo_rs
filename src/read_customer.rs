@@ -25,10 +25,10 @@ pub async fn read_customer(email: String) -> Result<impl Reply, Infallible> {
 
     let json = warp::reply::json(&Customer {
         email,
-        first_name: String::from("Helge"),
-        last_name: String::from("Schneider"),
-        date_of_birth: String::from(""),
-        addresses: Vec::new(),
+        first_name: None,
+        last_name: None,
+        date_of_birth: None,
+        addresses: Some(Vec::new()),
     });
 
     let code = StatusCode::OK;

@@ -5,6 +5,7 @@ use reqwest::RequestBuilder;
 
 use crate::model::CtAccessTokenResponse;
 
+#[derive(Clone)]
 pub struct CtClient {
     access_token: String,
     api_url: String,
@@ -59,6 +60,7 @@ impl CtClient {
     pub fn delete(&self, ct_path: &str) -> RequestBuilder {
         self.client
             .delete(format!("{}/{}{}", self.api_url, self.project_key, ct_path))
+            .bearer_auth(&self.access_token)
     }
 
     pub fn get(&self, ct_path: &str) -> RequestBuilder {
@@ -70,5 +72,6 @@ impl CtClient {
     pub fn post(&self, ct_path: &str) -> RequestBuilder {
         self.client
             .post(format!("{}/{}{}", self.api_url, self.project_key, ct_path))
+            .bearer_auth(&self.access_token)
     }
 }

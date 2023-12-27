@@ -13,10 +13,10 @@ pub struct Address {
 #[serde(rename_all = "camelCase")]
 pub struct Customer {
     pub email: String,
-    pub first_name: String,
-    pub last_name: String,
-    pub date_of_birth: String,
-    pub addresses: Vec<Address>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub date_of_birth: Option<String>,
+    pub addresses: Option<Vec<CtAddress>>,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -58,4 +58,24 @@ pub struct CtCustomer {
     pub last_name: Option<String>,
     pub date_of_birth: Option<String>,
     pub addresses: Option<Vec<CtAddress>>,
+}
+
+impl From<Customer> for CtCustomer {
+    fn from(customer: Customer) -> Self {
+        let Customer { 
+            email, 
+            first_name,
+            last_name,
+            date_of_birth,
+            addresses,
+        } = customer;
+
+        Self {
+            email, 
+            first_name,
+            last_name,
+            date_of_birth,
+            addresses,
+        }
+    }
 }

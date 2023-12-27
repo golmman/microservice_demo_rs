@@ -24,17 +24,16 @@ async fn main() {
     println!("Initializing commercetools client...");
     let ct_client = CtClient::new().await;
 
-    let ct_customer_response = ct_client
-        .get("/customers")
-        .send()
-        .await
-        .unwrap()
-        .json::<CtCustomerResponse>()
-        //.text()
-        .await
-        .unwrap();
-
-    println!("{:?}", ct_customer_response);
+    //let ct_customer_response = ct_client
+    //    .get("/customers")
+    //    .send()
+    //    .await
+    //    .unwrap()
+    //    .json::<CtCustomerResponse>()
+    //    //.text()
+    //    .await
+    //    .unwrap();
+    //println!("{:?}", ct_customer_response);
 
     println!("Starting server on localhost:3030 ...");
 
@@ -42,7 +41,9 @@ async fn main() {
         .and(warp::path!("customer" / String))
         .and_then(read_customer);
 
+    // reqwest client is an arc, so cloning is fine
     let upsert_customer_route = warp::post()
+        .map(move || ct_client.clone())
         .and(warp::path!("customer" / String))
         .and(warp::body::json())
         .and_then(upsert_customer);
