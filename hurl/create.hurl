@@ -1,7 +1,7 @@
 POST http://localhost:3030/customer/abc@def.com
 content-type:application/json
 {
-    "email": "rust3@konze.de",
+    "email": "rust4@konze.de",
     "firstName": "hello",
     "lastName": "world",
     "dateOfBirth": "2023-12-27",
