@@ -3,7 +3,7 @@ use serde_derive::Serialize;
 
 use super::address::Address;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtAddress {
     pub city: Option<String>,

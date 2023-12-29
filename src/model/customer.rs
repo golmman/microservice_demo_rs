@@ -23,7 +23,7 @@ impl From<CtCustomer> for Customer {
             email,
             first_name,
             last_name,
-            password,
+            ..
         } = ct_customer;
 
         let addresses = addresses.map(|a| {

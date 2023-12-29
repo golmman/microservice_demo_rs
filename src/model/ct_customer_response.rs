@@ -3,7 +3,7 @@ use serde_derive::Serialize;
 
 use super::ct_customer::CtCustomer;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomerResponse {
     pub limit: u32,

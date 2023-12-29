@@ -12,7 +12,7 @@ pub async fn upsert_customer(
     email: String,
     customer: Customer,
 ) -> Result<impl warp::reply::Reply, Infallible> {
-    println!("{:?}", customer);
+    println!("upserting customer {email}...");
 
     let ct_customer_request = CtCustomer::from(customer);
 

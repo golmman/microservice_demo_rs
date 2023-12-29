@@ -4,15 +4,17 @@ use serde_derive::Serialize;
 use super::ct_address::CtAddress;
 use super::customer::Customer;
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomer {
     pub addresses: Option<Vec<CtAddress>>,
     pub date_of_birth: Option<String>,
     pub email: String,
     pub first_name: Option<String>,
+    pub id: Option<String>,
     pub last_name: Option<String>,
     pub password: Option<String>,
+    pub version: Option<u32>,
 }
 
 impl From<Customer> for CtCustomer {
@@ -36,8 +38,10 @@ impl From<Customer> for CtCustomer {
             date_of_birth,
             email,
             first_name,
+            id: None,
             last_name,
             password: Some(String::from("admin_admin")),
+            version: None,
         }
     }
 }
