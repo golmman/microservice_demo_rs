@@ -39,7 +39,7 @@ pub async fn upsert_customer(
     } else {
         (
             serde_json::to_string(&ErrorResponse {
-                code: String::from("CT_ERROR"),
+                code: String::from("CUSTOMER_CREATION_FAILED"),
                 message: String::from(ct_customer_response_raw),
             })
             .unwrap(),

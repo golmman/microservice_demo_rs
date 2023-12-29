@@ -1,5 +1,15 @@
+use warp::http::StatusCode;
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
+
+pub enum ErrorCode {
+    CustomerCreationFailed,
+}
+
+pub struct Reply {
+    pub response: String,
+    pub status: StatusCode,
+}
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
