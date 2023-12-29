@@ -1,13 +1,10 @@
 use std::convert::Infallible;
 
-use warp::http::StatusCode;
-
 use crate::ct_client::CtClient;
 use crate::model::ct_customer::CtCustomer;
 use crate::model::ct_customer_created::CtCustomerCreated;
 use crate::model::customer::Customer;
 use crate::model::error_code::ErrorCode;
-use crate::model::error_response::ErrorResponse;
 use crate::model::reply::Reply;
 
 pub async fn upsert_customer(

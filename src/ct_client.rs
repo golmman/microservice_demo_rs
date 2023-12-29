@@ -1,6 +1,5 @@
 use std::env;
 
-use reqwest::IntoUrl;
 use reqwest::RequestBuilder;
 
 use crate::model::ct_access_token_response::CtAccessTokenResponse;
@@ -42,8 +41,6 @@ impl CtClient {
             .unwrap();
 
         let access_token = ct_access_token_response.access_token;
-
-        println!("{:#?}", access_token);
 
         Self {
             access_token,
