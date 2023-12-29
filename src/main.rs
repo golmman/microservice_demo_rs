@@ -1,15 +1,13 @@
 use std::convert::Infallible;
 use std::error::Error;
 
-use model::ErrorResponse;
+use model::error_response::ErrorResponse;
 use warp::http::StatusCode;
 use warp::reject::Rejection;
 use warp::reply::Reply;
 use warp::Filter;
 
 use crate::ct_client::CtClient;
-use crate::model::CtCustomerResponse;
-use crate::model::Customer;
 use crate::read_customer::read_customer;
 use crate::upsert_customer::upsert_customer;
 

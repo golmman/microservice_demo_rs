@@ -3,7 +3,7 @@ use std::env;
 use reqwest::IntoUrl;
 use reqwest::RequestBuilder;
 
-use crate::model::CtAccessTokenResponse;
+use crate::model::ct_access_token_response::CtAccessTokenResponse;
 
 #[derive(Clone)]
 pub struct CtClient {

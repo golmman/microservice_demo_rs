@@ -4,7 +4,7 @@ use warp::reply::Reply;
 use std::collections::HashMap;
 use std::convert::Infallible;
 
-use crate::Customer;
+use crate::model::customer::Customer;
 
 async fn fetch_data() -> Result<HashMap<String, String>, reqwest::Error> {
     let data_source_url = "https://httpbin.org/ip";

@@ -4,10 +4,10 @@ use warp::http::StatusCode;
 use warp::reply::Reply;
 
 use crate::ct_client::CtClient;
-use crate::model::CtCustomer;
-use crate::model::CtCustomerCreated;
-use crate::model::Customer;
-use crate::model::ErrorResponse;
+use crate::model::ct_customer::CtCustomer;
+use crate::model::ct_customer_created::CtCustomerCreated;
+use crate::model::customer::Customer;
+use crate::model::error_response::ErrorResponse;
 
 pub async fn upsert_customer(
     ct_client: CtClient,
