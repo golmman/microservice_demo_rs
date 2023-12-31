@@ -3,7 +3,7 @@ use serde_derive::Serialize;
 
 use super::address::Address;
 use super::ct_customer::CtCustomer;
-use super::ct_customer_created::CtCustomerCreated;
+use super::ct_customer_created::CtCustomerSignInResult;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
@@ -42,8 +42,8 @@ impl From<CtCustomer> for Customer {
     }
 }
 
-impl From<CtCustomerCreated> for Customer {
-    fn from(ct_customer_created: CtCustomerCreated) -> Self {
+impl From<CtCustomerSignInResult> for Customer {
+    fn from(ct_customer_created: CtCustomerSignInResult) -> Self {
         Customer::from(ct_customer_created.customer)
     }
 }

@@ -4,6 +4,7 @@ use reqwest::RequestBuilder;
 
 use crate::model::ct_access_token_response::CtAccessTokenResponse;
 
+#[allow(dead_code)]
 #[derive(Clone)]
 pub struct CtClient {
     access_token: String,

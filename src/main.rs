@@ -21,6 +21,12 @@ mod upsert_customer;
 
 #[tokio::main]
 async fn main() {
+    env_logger::Builder::from_default_env()
+        //.filter_level(log::LevelFilter::max())
+        .filter_level(log::LevelFilter::Info)
+        .target(env_logger::Target::Stdout)
+        .init();
+
     println!("Initializing commercetools client...");
     let ct_client = CtClient::new().await;
 

@@ -1,4 +1,4 @@
 edition = "2021"
 imports_granularity = "Item"
 max_width = 80
-chain_width = 10
+#chain_width = 10

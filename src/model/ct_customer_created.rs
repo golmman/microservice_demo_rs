@@ -5,6 +5,6 @@ use super::ct_customer::CtCustomer;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CtCustomerCreated {
+pub struct CtCustomerSignInResult {
     pub customer: CtCustomer,
 }

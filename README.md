@@ -5,6 +5,8 @@
 * toCamelCase
 * rust doesn't know a 'null' value, uses Option
 * serde doesn't distinguish null and undefined
+* if let, let else
+* Result = Maybe (Left/Right) monad
 
 ## hurl
 ```

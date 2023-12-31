@@ -45,3 +45,9 @@ impl From<Customer> for CtCustomer {
         }
     }
 }
+
+impl  CtCustomer {
+    pub fn from_str(ct_customer_raw: &str) -> Option<CtCustomer> {
+        serde_json::from_str::<CtCustomer>(&ct_customer_raw).ok()
+    }
+}
