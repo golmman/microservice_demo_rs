@@ -26,8 +26,9 @@ pub async fn upsert_customer(
         .await
         .unwrap();
 
-    let reply = if let Ok(ct_customer_created) =
-        serde_json::from_str::<CtCustomerSignInResult>(&ct_customer_response_raw)
+    let reply = if let Ok(ct_customer_created) = serde_json::from_str::<
+        CtCustomerSignInResult,
+    >(&ct_customer_response_raw)
     {
         Reply::created(&Customer::from(ct_customer_created))
     } else {

@@ -27,11 +27,8 @@ impl From<Customer> for CtCustomer {
             addresses,
         } = customer;
 
-        let addresses = addresses.map(|a| {
-            a.into_iter()
-                .map(|b| CtAddress::from(b))
-                .collect()
-        });
+        let addresses = addresses
+            .map(|a| a.into_iter().map(|b| CtAddress::from(b)).collect());
 
         Self {
             addresses,
@@ -46,7 +43,7 @@ impl From<Customer> for CtCustomer {
     }
 }
 
-impl  CtCustomer {
+impl CtCustomer {
     pub fn from_str(ct_customer_raw: &str) -> Option<CtCustomer> {
         serde_json::from_str::<CtCustomer>(&ct_customer_raw).ok()
     }

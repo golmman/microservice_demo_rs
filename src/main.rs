@@ -72,10 +72,7 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
     {
         message = match e.source() {
             Some(cause) => {
-                if cause
-                    .to_string()
-                    .contains("denom")
-                {
+                if cause.to_string().contains("denom") {
                     "FIELD_ERROR: denom"
                 } else {
                     "BAD_REQUEST"

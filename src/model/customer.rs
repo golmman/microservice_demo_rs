@@ -26,11 +26,8 @@ impl From<CtCustomer> for Customer {
             ..
         } = ct_customer;
 
-        let addresses = addresses.map(|a| {
-            a.into_iter()
-                .map(|b| Address::from(b))
-                .collect()
-        });
+        let addresses = addresses
+            .map(|a| a.into_iter().map(|b| Address::from(b)).collect());
 
         Self {
             email,
