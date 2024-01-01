@@ -3,7 +3,7 @@ use serde_derive::Serialize;
 
 use super::address::Address;
 use super::ct_customer::CtCustomer;
-use super::ct_customer_created::CtCustomerSignInResult;
+use super::ct_customer_sign_in_result::CtCustomerSignInResult;
 
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]

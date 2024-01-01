@@ -20,7 +20,7 @@ impl Reply {
         Self { response, status }
     }
 
-    pub fn deleted<T>(value: &T) -> Self
+    pub fn ok<T>(value: &T) -> Self
     where
         T: ?Sized + Serialize,
     {

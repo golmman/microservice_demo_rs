@@ -6,7 +6,7 @@ use super::customer::Customer;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CtCustomer {
+pub struct CtCustomerDraft {
     pub addresses: Option<Vec<CtAddress>>,
     pub date_of_birth: Option<String>,
     pub email: String,
@@ -17,7 +17,7 @@ pub struct CtCustomer {
     pub version: Option<u32>,
 }
 
-impl From<Customer> for CtCustomer {
+impl From<Customer> for CtCustomerDraft {
     fn from(customer: Customer) -> Self {
         let Customer {
             email,
@@ -40,11 +40,5 @@ impl From<Customer> for CtCustomer {
             password: Some(String::from("admin_admin")),
             version: None,
         }
-    }
-}
-
-impl CtCustomer {
-    pub fn from_str(json: &str) -> Option<Self> {
-        serde_json::from_str::<Self>(&json).ok()
     }
 }

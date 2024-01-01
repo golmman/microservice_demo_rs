@@ -5,6 +5,8 @@ pub enum ErrorCode {
     CustomerCreationFailed,
     CustomerDeletionFailed,
     CustomerNotFound,
+    CustomerUpdateFailed,
+    InconsistentEmail,
 }
 
 impl From<&ErrorCode> for String {
@@ -25,6 +27,8 @@ impl From<&ErrorCode> for StatusCode {
             ErrorCode::CustomerCreationFailed => StatusCode::BAD_GATEWAY,
             ErrorCode::CustomerDeletionFailed => StatusCode::BAD_GATEWAY,
             ErrorCode::CustomerNotFound => StatusCode::NOT_FOUND,
+            ErrorCode::CustomerUpdateFailed => StatusCode::BAD_GATEWAY,
+            ErrorCode::InconsistentEmail => StatusCode::BAD_REQUEST,
         }
     }
 }

@@ -1,11 +1,11 @@
-POST http://localhost:3030/customer/abc@def.com
+POST http://localhost:3030/customer/rust5@konze.de
 content-type:application/json
 {
-    "email": "abc(at)def.de",
-    "firstName": "hello",
-    "lastName": "world",
-    "dateOfBirth": "2023-11-28?",
+    "email": "rust5@konze.de",
+    "firstName": "hello1111222",
+    "lastName": "world3333",
+    "dateOfBirth": "2023-12-27",
     "addresses": []
 }
 
-HTTP 200
+#HTTP 200

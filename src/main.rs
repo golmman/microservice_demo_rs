@@ -1,6 +1,8 @@
 use std::convert::Infallible;
 use std::error::Error;
 
+use env_logger::Target;
+use log::LevelFilter;
 use model::error_response::ErrorResponse;
 use warp::http::StatusCode;
 use warp::reject::Rejection;
@@ -23,8 +25,8 @@ mod upsert_customer;
 async fn main() {
     env_logger::Builder::from_default_env()
         //.filter_level(log::LevelFilter::max())
-        .filter_level(log::LevelFilter::Info)
-        .target(env_logger::Target::Stdout)
+        .filter_level(LevelFilter::Info)
+        .target(Target::Stdout)
         .init();
 
     println!("Initializing commercetools client...");

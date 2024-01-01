@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Customer Service
   description: This is a customer service demonstration in Scala, Go or Rust
-  version: 0.1.0
+  version: 0.1.1
 servers:
   - url: http://localhost:8080
     description: server for local development
@@ -38,7 +38,7 @@ paths:
           required: true
           schema:
             type: string
-          example: test@dotsource.de
+          example: example@test.com
       responses:
         '200':
           description: OK
@@ -60,7 +60,7 @@ paths:
           required: true
           schema:
             type: string
-          example: test@dotsource.de
+          example: example@test.com
       requestBody:
         required: true
         content:

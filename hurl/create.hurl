@@ -1,4 +1,4 @@
-POST http://localhost:3030/customer/abc@def.com
+POST http://localhost:3030/customer/rust5@konze.de
 content-type:application/json
 {
     "email": "rust5@konze.de",
@@ -8,4 +8,4 @@ content-type:application/json
     "addresses": []
 }
 
-HTTP 201
+#HTTP 201
