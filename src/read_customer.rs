@@ -1,20 +1,33 @@
+use log::warn;
 use warp::http::StatusCode;
-use warp::reply::Reply;
 
 use std::convert::Infallible;
 
+use crate::ct_client::CtClient;
+use crate::get_ct_customer::get_ct_customer;
 use crate::model::customer::Customer;
+use crate::model::error_code::ErrorCode;
+use crate::model::reply::Reply;
 
-pub async fn read_customer(email: String) -> Result<impl Reply, Infallible> {
-    let json = warp::reply::json(&Customer {
-        email,
-        first_name: None,
-        last_name: None,
-        date_of_birth: None,
-        addresses: Some(Vec::new()),
-    });
+pub async fn read_customer(
+    ct_client: CtClient,
+    email: String,
+) -> Result<impl warp::reply::Reply, Infallible> {
+    let Reply { response, status } = execute_request(ct_client, email).await;
 
-    let code = StatusCode::OK;
+    Ok(warp::reply::with_status(response, status))
+}
 
-    Ok(warp::reply::with_status(json, code))
+async fn execute_request(ct_client: CtClient, email: String) -> Reply {
+    let Some(ct_customer) = get_ct_customer(&ct_client, &email).await else {
+        warn!("customer {email} not found");
+        return Reply::error(
+            ErrorCode::CustomerNotFound,
+            &format!(
+                "Customer read failed: customer {email} does not exist"
+            ),
+        );
+    };
+
+    Reply::ok(&Customer::from(ct_customer))
 }

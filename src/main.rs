@@ -34,11 +34,13 @@ async fn main() {
 
     println!("Starting server on localhost:3030 ...");
 
+    // reqwest client is an arc, so cloning is fine
+    let c = ct_client.clone();
     let read_customer_route = warp::get()
+        .map(move || c.clone())
         .and(warp::path!("customer" / String))
         .and_then(read_customer);
 
-    // reqwest client is an arc, so cloning is fine
     let c = ct_client.clone();
     let upsert_customer_route = warp::post()
         .map(move || c.clone())
