@@ -2,11 +2,12 @@ use std::convert::Infallible;
 use std::error::Error;
 
 use env_logger::Target;
+use log::error;
+use log::info;
 use log::LevelFilter;
 use model::error_response::ErrorResponse;
 use warp::http::StatusCode;
 use warp::reject::Rejection;
-use warp::reply::Reply;
 use warp::Filter;
 
 use crate::ct_client::CtClient;
@@ -29,10 +30,8 @@ async fn main() {
         .target(Target::Stdout)
         .init();
 
-    println!("Initializing commercetools client...");
+    info!("Initializing commercetools client...");
     let ct_client = CtClient::new().await;
-
-    println!("Starting server on localhost:3030 ...");
 
     // reqwest client is an arc, so cloning is fine
     let c = ct_client.clone();
@@ -64,7 +63,9 @@ async fn main() {
     .await;
 }
 
-async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
+async fn handle_rejection(
+    err: Rejection,
+) -> Result<impl warp::reply::Reply, Infallible> {
     let code;
     let message;
 
@@ -89,7 +90,7 @@ async fn handle_rejection(err: Rejection) -> Result<impl Reply, Infallible> {
         code = StatusCode::METHOD_NOT_ALLOWED;
         message = "METHOD_NOT_ALLOWED";
     } else {
-        eprintln!("unhandled rejection: {:?}", err);
+        error!("unhandled rejection: {:?}", err);
         code = StatusCode::INTERNAL_SERVER_ERROR;
         message = "UNHANDLED_REJECTION";
     }
