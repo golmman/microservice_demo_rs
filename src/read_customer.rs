@@ -1,5 +1,4 @@
 use log::warn;
-use warp::http::StatusCode;
 
 use std::convert::Infallible;
 
@@ -23,9 +22,7 @@ async fn execute_request(ct_client: CtClient, email: String) -> Reply {
         warn!("customer {email} not found");
         return Reply::error(
             ErrorCode::CustomerNotFound,
-            &format!(
-                "Customer read failed: customer {email} does not exist"
-            ),
+            &format!("Customer read failed: customer {email} does not exist"),
         );
     };
 
