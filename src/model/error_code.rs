@@ -6,7 +6,11 @@ pub enum ErrorCode {
     CustomerDeletionFailed,
     CustomerNotFound,
     CustomerUpdateFailed,
+    DeserializationFailed,
     InconsistentEmail,
+    InternalServerError,
+    MethodNotAllowed,
+    ResourceNotFound,
 }
 
 impl From<&ErrorCode> for String {
@@ -28,7 +32,11 @@ impl From<&ErrorCode> for StatusCode {
             ErrorCode::CustomerDeletionFailed => StatusCode::BAD_GATEWAY,
             ErrorCode::CustomerNotFound => StatusCode::NOT_FOUND,
             ErrorCode::CustomerUpdateFailed => StatusCode::BAD_GATEWAY,
+            ErrorCode::DeserializationFailed => StatusCode::BAD_REQUEST,
             ErrorCode::InconsistentEmail => StatusCode::BAD_REQUEST,
+            ErrorCode::InternalServerError => StatusCode::INTERNAL_SERVER_ERROR,
+            ErrorCode::MethodNotAllowed => StatusCode::METHOD_NOT_ALLOWED,
+            ErrorCode::ResourceNotFound => StatusCode::NOT_FOUND,
         }
     }
 }

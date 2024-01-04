@@ -1,3 +1,3 @@
-DELETE http://localhost:3030/customer/rust5@konze.de
+DELETE http://localhost:3030/customer/rust@konze.de
 
 #HTTP 200
