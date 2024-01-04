@@ -3,6 +3,7 @@ use log::warn;
 use warp::filters::body::BodyDeserializeError;
 
 use std::convert::Infallible;
+use std::error::Error;
 
 use crate::model::error_code::ErrorCode;
 use crate::model::reply::Reply;
@@ -24,11 +25,13 @@ fn create_error_reply(err: Rejection) -> Reply {
             ErrorCode::ResourceNotFound,
             "No resource was found for the given request.",
         );
-    } else if err.find::<BodyDeserializeError>().is_some() {
+    } else if let Some(e) = err.find::<BodyDeserializeError>() {
         warn!("{err:?}");
         return Reply::error(
             ErrorCode::DeserializationFailed,
-            "The request body could not be deserialized.",
+            &e.source()
+                .map(|s| s.to_string())
+                .unwrap_or("reason undetermined".to_string()),
         );
     } else if err.find::<MethodNotAllowed>().is_some() {
         warn!("{err:?}");
