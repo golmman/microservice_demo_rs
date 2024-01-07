@@ -10,6 +10,7 @@ use crate::read_customer::read_customer;
 use crate::upsert_customer::upsert_customer;
 
 mod ct_client;
+mod decode_url;
 mod delete_customer;
 mod get_ct_customer;
 mod handle_rejection;

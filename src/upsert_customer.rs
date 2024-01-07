@@ -5,6 +5,7 @@ use log::info;
 use log::warn;
 
 use crate::ct_client::CtClient;
+use crate::decode_url::decode_url;
 use crate::get_ct_customer::get_ct_customer;
 use crate::model::ct_customer::CtCustomer;
 use crate::model::ct_customer_draft::CtCustomerDraft;
@@ -19,11 +20,14 @@ pub async fn upsert_customer(
     email: String,
     customer: Customer,
 ) -> Result<impl warp::reply::Reply, Infallible> {
+    let email = decode_url(email);
+
     let Reply { response, status } =
         execute_request(ct_client, email, customer).await;
 
     Ok(warp::http::Response::builder()
         .header("Access-Control-Allow-Origin", "*")
+        .header("Content-Type", "application/json")
         .status(status)
         .body(response))
 }

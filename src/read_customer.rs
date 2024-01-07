@@ -3,6 +3,7 @@ use log::warn;
 use std::convert::Infallible;
 
 use crate::ct_client::CtClient;
+use crate::decode_url::decode_url;
 use crate::get_ct_customer::get_ct_customer;
 use crate::model::customer::Customer;
 use crate::model::error_code::ErrorCode;
@@ -12,10 +13,13 @@ pub async fn read_customer(
     ct_client: CtClient,
     email: String,
 ) -> Result<impl warp::reply::Reply, Infallible> {
+    let email = decode_url(email);
+
     let Reply { response, status } = execute_request(ct_client, email).await;
 
     Ok(warp::http::Response::builder()
         .header("Access-Control-Allow-Origin", "*")
+        .header("Content-Type", "application/json")
         .status(status)
         .body(response))
 }

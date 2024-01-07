@@ -11,6 +11,8 @@
 * warp
   * rejection handlings sucks: https://github.com/seanmonstar/warp/issues/77
   * no url decoding
+  * confusing filters
+  * axum is probably a better choice
 
 ## run
 ```sh
