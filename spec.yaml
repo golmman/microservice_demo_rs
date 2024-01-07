@@ -2,10 +2,10 @@ openapi: 3.0.1
 info:
   title: Customer Service
   description: This is a customer service demonstration in Scala, Go or Rust
-  version: 0.1.1
+  version: 0.1.2
 servers:
-  - url: http://localhost:8080
-    description: server for local development
+  - url: http://localhost:3030
+    description: local rust (warp) server
 paths:
   /customer/{email}:
     get:
@@ -16,7 +16,7 @@ paths:
           required: true
           schema:
             type: string
-          example: test@dotsource.de
+          example: example@test.com
       responses:
         '200':
           description: OK
