@@ -15,7 +15,10 @@ pub async fn handle_rejection(
 ) -> Result<impl warp::reply::Reply, Infallible> {
     let Reply { response, status } = create_error_reply(err);
 
-    Ok(warp::reply::with_status(response, status))
+    Ok(warp::http::Response::builder()
+        .header("Access-Control-Allow-Origin", "*")
+        .status(status)
+        .body(response))
 }
 
 fn create_error_reply(err: Rejection) -> Reply {

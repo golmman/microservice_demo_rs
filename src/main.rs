@@ -21,6 +21,7 @@ mod upsert_customer;
 async fn main() {
     env_logger::Builder::from_default_env()
         .filter_level(LevelFilter::Info)
+        //.filter_level(LevelFilter::max())
         .target(Target::Stdout)
         .init();
 
@@ -47,10 +48,20 @@ async fn main() {
         .and(warp::path!("customer" / String))
         .and_then(delete_customer);
 
+    let cors_route = warp::options().map(|| {
+        warp::http::Response::builder()
+            .header("Access-Control-Allow-Origin", "*")
+            .header("Access-Control-Allow-Methods", "*")
+            .header("Access-Control-Allow-Headers", "*")
+            .status(204)
+            .body("")
+    });
+
     warp::serve(
         read_customer_route
             .or(upsert_customer_route)
             .or(delete_customer_route)
+            .or(cors_route)
             .recover(handle_rejection),
     )
     .run(([127, 0, 0, 1], 3030))

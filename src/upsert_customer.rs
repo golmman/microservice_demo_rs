@@ -22,7 +22,10 @@ pub async fn upsert_customer(
     let Reply { response, status } =
         execute_request(ct_client, email, customer).await;
 
-    Ok(warp::reply::with_status(response, status))
+    Ok(warp::http::Response::builder()
+        .header("Access-Control-Allow-Origin", "*")
+        .status(status)
+        .body(response))
 }
 
 async fn execute_request(

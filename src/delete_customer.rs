@@ -16,7 +16,10 @@ pub async fn delete_customer(
 ) -> Result<impl warp::reply::Reply, Infallible> {
     let Reply { response, status } = execute_request(ct_client, email).await;
 
-    Ok(warp::reply::with_status(response, status))
+    Ok(warp::http::Response::builder()
+        .header("Access-Control-Allow-Origin", "*")
+        .status(status)
+        .body(response))
 }
 
 async fn execute_request(ct_client: CtClient, email: String) -> Reply {

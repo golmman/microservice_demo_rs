@@ -8,7 +8,9 @@
 * if let, let else
 * Result = Maybe (Left/Right) monad
 * "rust has nice error messages": for a counterexample swap 'and' and 'map' in a route in main.rs
-* warp rejection handlings sucks: https://github.com/seanmonstar/warp/issues/77
+* warp
+  * rejection handlings sucks: https://github.com/seanmonstar/warp/issues/77
+  * no url decoding
 
 ## run
 ```sh
