@@ -8,7 +8,7 @@ use super::ct_address::CtAddress;
 pub struct Address {
     pub city: Option<String>,
     pub street_name: Option<String>,
-    pub zip_code: Option<String>,
+    pub postal_code: Option<String>,
 }
 
 impl From<CtAddress> for Address {
@@ -16,13 +16,14 @@ impl From<CtAddress> for Address {
         let CtAddress {
             city,
             street_name,
-            zip_code,
+            postal_code,
+            ..
         } = ct_address;
 
         Self {
             city,
             street_name,
-            zip_code,
+            postal_code,
         }
     }
 }

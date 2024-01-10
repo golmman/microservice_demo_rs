@@ -7,8 +7,9 @@ use super::address::Address;
 #[serde(rename_all = "camelCase")]
 pub struct CtAddress {
     pub city: Option<String>,
+    pub country: String,
     pub street_name: Option<String>,
-    pub zip_code: Option<String>,
+    pub postal_code: Option<String>,
 }
 
 impl From<Address> for CtAddress {
@@ -16,13 +17,14 @@ impl From<Address> for CtAddress {
         let Address {
             city,
             street_name,
-            zip_code,
+            postal_code,
         } = address;
 
         Self {
             city,
+            country: String::from("DE"),
             street_name,
-            zip_code,
+            postal_code,
         }
     }
 }
