@@ -1,6 +1,7 @@
 pub mod address;
 pub mod ct_access_token_response;
 pub mod ct_address;
+pub mod ct_address_draft;
 pub mod ct_customer;
 pub mod ct_customer_draft;
 pub mod ct_customer_response;

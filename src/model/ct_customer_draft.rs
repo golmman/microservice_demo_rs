@@ -1,13 +1,13 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-use super::ct_address::CtAddress;
+use super::ct_address_draft::CtAddressDraft;
 use super::customer::Customer;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomerDraft {
-    pub addresses: Option<Vec<CtAddress>>,
+    pub addresses: Option<Vec<CtAddressDraft>>,
     pub date_of_birth: Option<String>,
     pub email: String,
     pub first_name: Option<String>,
@@ -28,7 +28,7 @@ impl From<Customer> for CtCustomerDraft {
         } = customer;
 
         let addresses = addresses
-            .map(|a| a.into_iter().map(|b| CtAddress::from(b)).collect());
+            .map(|a| a.into_iter().map(|b| CtAddressDraft::from(b)).collect());
 
         Self {
             addresses,

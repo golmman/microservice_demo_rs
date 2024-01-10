@@ -8,23 +8,7 @@ use super::address::Address;
 pub struct CtAddress {
     pub city: Option<String>,
     pub country: String,
+    pub id: String,
     pub street_name: Option<String>,
     pub postal_code: Option<String>,
-}
-
-impl From<Address> for CtAddress {
-    fn from(address: Address) -> Self {
-        let Address {
-            city,
-            street_name,
-            postal_code,
-        } = address;
-
-        Self {
-            city,
-            country: String::from("DE"),
-            street_name,
-            postal_code,
-        }
-    }
 }

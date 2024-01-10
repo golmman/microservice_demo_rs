@@ -92,11 +92,9 @@ async fn update_customer(
     customer: Customer,
     ct_customer: CtCustomer,
 ) -> Reply {
-    let id = ct_customer.id.unwrap();
-    let version = ct_customer.version.unwrap();
-    let path = format!("/customers/{}", id);
+    let path = format!("/customers/{}", ct_customer.id);
     let ct_customer_update_command =
-        CtCustomerUpdateCommand::from((customer, version));
+        CtCustomerUpdateCommand::from((customer, ct_customer));
 
     info!("updating ct customer {email}...");
     let ct_customer_raw = ct_client

@@ -1,13 +1,13 @@
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
-use super::ct_address::CtAddress;
+use super::ct_address_draft::CtAddressDraft;
 
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomerUpdateAction {
     action: String,
-    address: Option<CtAddress>,
+    address: Option<CtAddressDraft>,
     address_id: Option<String>,
     date_of_birth: Option<String>,
     email: Option<String>,
@@ -58,7 +58,7 @@ impl CtCustomerUpdateAction {
         action
     }
 
-    pub fn add_address(address: CtAddress) -> Self {
+    pub fn add_address(address: CtAddressDraft) -> Self {
         let mut action = Self::new("addAddress");
         action.address = Some(address);
         action

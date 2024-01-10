@@ -37,8 +37,8 @@ async fn execute_request(ct_client: CtClient, email: String) -> Reply {
         );
     };
 
-    let path = format!("/customers/{}", ct_customer.id.unwrap());
-    let query = [("version", ct_customer.version.unwrap())];
+    let path = format!("/customers/{}", ct_customer.id);
+    let query = [("version", ct_customer.version)];
 
     info!("deleting ct customer {email}...");
     let ct_customer_raw = ct_client
