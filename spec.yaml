@@ -2,7 +2,7 @@ openapi: 3.0.1
 info:
   title: Customer Service
   description: This is a customer service demonstration in Scala, Go or Rust
-  version: 0.1.2
+  version: 0.2.0
 servers:
   - url: http://localhost:3030
     description: local rust (warp) server
@@ -95,14 +95,18 @@ components:
       properties:
         email:
           type: string
+          example: example@test.com
         firstName:
           type: string
+          example: Stefan
         lastName:
           type: string
+          example: Banach
         dateOfBirth:
           type: string
           format: date
           description: ISO-8601 Date
+          example: 1892-03-30
         addresses:
           type: array
           items:
@@ -112,18 +116,28 @@ components:
       properties:
         streetName:
           type: string
+          example: Fledermausweg
         city:
           type: string
-        zipCode:
+          example: Las Vegas
+        postalCode:
           type: string
+          example: 1337
     Error:
       type: object
       properties:
         message:
           type: string
+          example: 'That rug really tied the room together.'
         code:
           type: string
           enum:
-            - NOT_FOUND
-            - BAD_REQUEST
-            - METHOD_NOT_ALLOWED
+            - CustomerCreationFailed,
+            - CustomerDeletionFailed,
+            - CustomerNotFound,
+            - CustomerUpdateFailed,
+            - DeserializationFailed,
+            - InconsistentEmail,
+            - InternalServerError,
+            - MethodNotAllowed,
+            - ResourceNotFound,
