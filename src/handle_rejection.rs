@@ -17,6 +17,7 @@ pub async fn handle_rejection(
 
     Ok(warp::http::Response::builder()
         .header("Access-Control-Allow-Origin", "*")
+        .header("Content-Type", "application/json")
         .status(status)
         .body(response))
 }

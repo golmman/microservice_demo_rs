@@ -28,6 +28,7 @@ content-type:application/json
 
 HTTP 201
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 3
 jsonpath "$.addresses[0].streetName" == "Goethestr. 1"
 jsonpath "$.addresses[0].city" == "Jena"
@@ -45,6 +46,7 @@ DELETE http://localhost:3030/customer/rust@konze.de
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 3
 jsonpath "$.addresses[0].streetName" == "Goethestr. 1"
 jsonpath "$.addresses[0].city" == "Jena"
@@ -70,6 +72,7 @@ content-type:application/json
 
 HTTP 201
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" isEmpty
 jsonpath "$.dateOfBirth" == "2024-01-01"
 jsonpath "$.email" == "rust@konze.de"
@@ -81,6 +84,7 @@ GET http://localhost:3030/customer/rust@konze.de
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" isEmpty
 jsonpath "$.dateOfBirth" == "2024-01-01"
 jsonpath "$.email" == "rust@konze.de"
@@ -100,6 +104,7 @@ content-type:application/json
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" isEmpty
 jsonpath "$.dateOfBirth" == "2024-01-01"
 jsonpath "$.email" == "rust@konze.de"
@@ -132,6 +137,7 @@ content-type:application/json
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 3
 jsonpath "$.addresses[0].streetName" == "Goethestr. 1"
 jsonpath "$.addresses[0].city" == "Jena"
@@ -166,6 +172,7 @@ content-type:application/json
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 2
 jsonpath "$.addresses[0].streetName" == "Goethestr. 1"
 jsonpath "$.addresses[0].city" == "Jena"
@@ -193,6 +200,7 @@ content-type:application/json
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 1
 jsonpath "$.addresses[0].city" == "Dresden"
 jsonpath "$.dateOfBirth" == "2025-08-26"
@@ -217,6 +225,7 @@ content-type:application/json
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 1
 jsonpath "$.addresses[0].city" == "Dresden"
 jsonpath "$.dateOfBirth" == "2025-08-26"
@@ -234,6 +243,7 @@ GET http://localhost:3030/customer/rust@bise.de
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 1
 jsonpath "$.addresses[0].city" == "Dresden"
 jsonpath "$.dateOfBirth" == "2025-08-26"
@@ -246,6 +256,7 @@ DELETE http://localhost:3030/customer/rust@bise.de
 
 HTTP 200
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.addresses" count == 1
 jsonpath "$.addresses[0].city" == "Dresden"
 jsonpath "$.dateOfBirth" == "2025-08-26"
@@ -258,4 +269,5 @@ GET http://localhost:3030/customer/rust@bise.de
 
 HTTP 404
 [Asserts]
+header "Content-Type" == "application/json"
 jsonpath "$.code" == "CustomerNotFound"
