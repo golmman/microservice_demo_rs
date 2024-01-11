@@ -76,3 +76,64 @@ fn add_addresses(
 
     actions
 }
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn it_creates_update_actions_which_remove_addresses() {
+        let ct_addresses = Some(vec![
+            CtAddress {
+                city: None,
+                country: String::from("DE"),
+                id: String::from("1"),
+                street_name: None,
+                postal_code: None,
+            },
+            CtAddress {
+                city: None,
+                country: String::from("DE"),
+                id: String::from("2"),
+                street_name: None,
+                postal_code: None,
+            },
+        ]);
+
+        let actions = remove_addresses(ct_addresses);
+
+        assert_eq!(actions[0].action, "removeAddress");
+        assert_eq!(actions[0].address_id, Some(String::from("1")));
+        assert_eq!(actions[1].action, "removeAddress");
+        assert_eq!(actions[1].address_id, Some(String::from("2")));
+    }
+
+    #[test]
+    fn it_creates_update_actions_which_add_addresses() {
+        let addresses = Some(vec![
+            Address {
+                city: Some(String::from("Berlin")),
+                street_name: None,
+                postal_code: None,
+            },
+            Address {
+                city: None,
+                street_name: None,
+                postal_code: Some(String::from("1234")),
+            },
+        ]);
+
+        let actions = add_addresses(addresses);
+
+        assert_eq!(actions[0].action, "addAddress");
+        assert_eq!(
+            actions[0].address.as_ref().unwrap().city,
+            Some(String::from("Berlin"))
+        );
+        assert_eq!(actions[1].action, "addAddress");
+        assert_eq!(
+            actions[1].address.as_ref().unwrap().postal_code,
+            Some(String::from("1234"))
+        );
+    }
+}

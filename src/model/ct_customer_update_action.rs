@@ -6,13 +6,13 @@ use super::ct_address_draft::CtAddressDraft;
 #[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CtCustomerUpdateAction {
-    action: String,
-    address: Option<CtAddressDraft>,
-    address_id: Option<String>,
-    date_of_birth: Option<String>,
-    email: Option<String>,
-    first_name: Option<String>,
-    last_name: Option<String>,
+    pub action: String,
+    pub address: Option<CtAddressDraft>,
+    pub address_id: Option<String>,
+    pub date_of_birth: Option<String>,
+    pub email: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
 }
 
 impl CtCustomerUpdateAction {
